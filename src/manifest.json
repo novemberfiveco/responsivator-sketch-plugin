@@ -1,0 +1,41 @@
+{
+  "name": "Responsivator",
+  "author": "Geert Wille - November Five",
+  "authorEmail": "geert@novemberfive.co",
+  "identifier": "be.novemberfive.responsivator",
+  "compatibleVersion": 3,
+  "bundleVersion": 1,
+  "commands": [
+    {
+      "name": "Sort on section",
+      "identifier": "sort-on-section",
+      "script": "./commands/sortOnSection.js",
+      "shortcut": "cmd alt ctrl c"
+    },
+    {
+      "name": "Sort on device",
+      "identifier": "sort-on-device",
+      "script": "./commands/sortOnDevice.js",
+      "shortcut": "cmd alt ctrl x"
+    },
+    {
+      "name": "Preferences",
+      "identifier": "change-preferences",
+      "script": "./commands/Preferences.js"
+    },
+    {
+      "name": "Update",
+      "identifier": "update",
+      "script": "./commands/Update.js"
+    }
+  ],
+  "menu": {
+    "title": "Responsivator",
+    "items": [
+      "sort-on-section",
+      "sort-on-device",
+      "change-preferences",
+      "update"
+    ]
+  }
+}

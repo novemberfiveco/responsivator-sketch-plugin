@@ -1,0 +1,56 @@
+{
+  "name": "responsivator-sketch-plugin",
+  "version": "0.1.0",
+  "description": "Plugin to handle multiple screen sizes in the same document",
+  "main": "novemberfive-responsivator.sketchplugin",
+  "manifest": "src/manifest.json",
+  "resources": [
+    "Resources/Preferences.js",
+    "Resources/Portal.js"
+  ],
+  "scripts": {
+    "test": "eslint -c ./.eslintrc src/ && eslint -c ./.eslintrc Resources/",
+    "postinstall": "npm run build && skpm link ./",
+    "build": "skpm build",
+    "publish": "skpm publish",
+    "todos": "node scripts/todo.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/novemberfiveco/responsivator-sketch-plugin.git"
+  },
+  "author": "Geert Wille <geert@novemberfive.co> (http://novemberfive.co/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/novemberfiveco/responsivator-sketch-plugin/issues"
+  },
+  "homepage": "https://github.com/novemberfiveco/responsivator-sketch-plugin#readme",
+  "devDependencies": {
+    "babel-plugin-transform-react-jsx": "^6.8.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-2": "^6.24.1",
+    "eslint": "^3.19.0",
+    "eslint-config-sketch": "^0.2.2",
+    "eslint-config-standard": "^10.2.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-node": "4.2.2",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "skpm": "^0.8.2",
+    "chalk": "^1.1.3",
+    "fs-extra": "^1.0.0"
+  },
+  "dependencies": {
+    "eslint-config-sketch": "^0.2.2",
+    "eslint-config-standard-preact": "^1.0.1",
+    "eslint-plugin-react": "^6.10.3",
+    "preact": "^7.1.0",
+    "sketch-constants": "^1.0.2",
+    "sketch-module-fs": "^0.1.2",
+    "sketch-module-google-analytics": "^0.1.3",
+    "sketch-module-update": "git://github.com/novemberfiveco/sketch-module-update.git#master",
+    "sketch-module-user-preferences": "^1.0.1",
+    "sketch-module-web-view": "^0.1.4"
+  }
+}

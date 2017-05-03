@@ -1,0 +1,17 @@
+# build artefacts
+novemberfive-responsivator.sketchplugin/Contents/Sketch
+novemberfive-responsivator.sketchplugin/Contents/Resources/Preferences.js
+
+# npm
+node_modules
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Optional npm cache directory
+.npm
+
+# IDE
+.vscode
