@@ -8,6 +8,7 @@ const LOCAL_PREFS = {
   paddingHorizontalDevice: 600,
   paddingVertical: 300,
   paddingVerticalDevice: 600,
+  defaultSort: 0,
   sendAnalytics: true
 }
 const GLOBAL_PREFS = {}

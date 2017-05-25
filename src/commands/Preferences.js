@@ -8,7 +8,7 @@ export default function (context) {
   const webUI = new WebUI(context, 'preferences.html', {
     identifier: getPluginInfo(context).identifier + '.preferences',
     width: 430,
-    height: 400,
+    height: 420,
     onlyShowCloseButton: true,
     hideTitleBar: true,
     handlers: {

@@ -32,6 +32,7 @@ class Preferences extends Component {
           </button>
         </Portal>
         {!ready && 'loading...'}
+        {!preferences.defaultSort && 'selected'}
         <h2>General preferences</h2>
         <div className='form'>
           <label htmlFor='paddingHorizontal'>Horizontal Padding</label>
@@ -48,6 +49,13 @@ class Preferences extends Component {
         <div className='form'>
           <label htmlFor='paddingVerticalDevice'>Vertical Device Padding</label>
           <input type='number' value={preferences.paddingVerticalDevice} id='paddingVerticalDevice' onInput={this.linkState('preferences.paddingVerticalDevice')} />
+        </div>
+        <div className='form'>
+          <label htmlFor='defaultSort'>Default sort</label>
+          <select id='defaultSort' name='cars' onInput={this.linkState('preferences.defaultSort')}>
+            <option value='0'>Small -> Large</option>
+            <option value='1'>Large -> Small</option>
+          </select>
         </div>
         <div className='form'>
           <input type='checkbox' checked={preferences.sendAnalytics} id='sendAnalytics' onChange={this.linkState('preferences.sendAnalytics')} />

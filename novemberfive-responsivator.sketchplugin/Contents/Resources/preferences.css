@@ -30,6 +30,11 @@ input[type="number"] {
   display: block;
 }
 
+select {
+  display: block;
+  width: 150px;
+}
+
 .form {
   padding-top: 10px;
 }
