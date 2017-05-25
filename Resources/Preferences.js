@@ -32,7 +32,6 @@ class Preferences extends Component {
           </button>
         </Portal>
         {!ready && 'loading...'}
-        {!preferences.defaultSort && 'selected'}
         <h2>General preferences</h2>
         <div className='form'>
           <label htmlFor='paddingHorizontal'>Horizontal Padding</label>
@@ -52,9 +51,9 @@ class Preferences extends Component {
         </div>
         <div className='form'>
           <label htmlFor='defaultSort'>Default sort</label>
-          <select id='defaultSort' name='cars' onInput={this.linkState('preferences.defaultSort')}>
-            <option value='0'>Small -> Large</option>
-            <option value='1'>Large -> Small</option>
+          <select id='defaultSort' name='defaultSort' onInput={this.linkState('preferences.defaultSort')} value={preferences.defaultSort}>
+            <option value='0'>Large -> Small</option>
+            <option value='1'>Small -> Large</option>
           </select>
         </div>
         <div className='form'>

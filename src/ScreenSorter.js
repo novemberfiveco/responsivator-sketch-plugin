@@ -14,6 +14,7 @@ class ScreenSorter {
     this._paddingHorizontalDevice = parseInt(getUserPreferences(this._context).paddingHorizontalDevice)
     this._paddingVertical = parseInt(getUserPreferences(this._context).paddingVertical)
     this._paddingVerticalDevice = parseInt(getUserPreferences(this._context).paddingVerticalDevice)
+    this._defaultSort = parseInt(getUserPreferences(this._context).defaultSort)
     this._currentColumn = 0
   }
 
@@ -75,7 +76,7 @@ class ScreenSorter {
 
   sortOnDevice () {
     // Create a Sort Descriptor for artboard name
-    let sortBySize = NSSortDescriptor.sortDescriptorWithKey_ascending('width', 0)
+    let sortBySize = NSSortDescriptor.sortDescriptorWithKey_ascending('width', this._defaultSort)
     let sortByName = NSSortDescriptor.sortDescriptorWithKey_ascending('name', 1)
     let sortedArtboards = this.convertArtboardsToSortableDictionary().sortedArrayUsingDescriptors([sortBySize, sortByName])
     let sortedArtboardLoop = sortedArtboards.objectEnumerator()
