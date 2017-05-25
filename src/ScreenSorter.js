@@ -9,7 +9,7 @@ class ScreenSorter {
     this._context = context
     this._document = context.document
     this._command = context.command
-    this._artboardPrefixRegex = /^([a-zA-Z]{1})-(\d{2,3})-(\d{2,3})/
+    this._artboardPrefixRegex = /^([a-zA-Z]+)-(\d+)-(\d+)/
     this._paddingHorizontal = parseInt(getUserPreferences(this._context).paddingHorizontal)
     this._paddingHorizontalDevice = parseInt(getUserPreferences(this._context).paddingHorizontalDevice)
     this._paddingVertical = parseInt(getUserPreferences(this._context).paddingVertical)
