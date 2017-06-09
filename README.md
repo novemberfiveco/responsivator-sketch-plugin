@@ -1,6 +1,6 @@
 responsivator-sketch-plugin
 =========
-[![GitHub release](https://img.shields.io/github/release/novemberfiveco/responsivator-sketch-plugin.svg?maxAge=2592000)](https://github.com/novemberfiveco/responsivator-sketch-plugin/releases) 
+[![GitHub release](https://badge.fury.io/gh/novemberfiveco%2Fresponsivator-sketch-plugin.svg?maxAge=3600)](https://github.com/novemberfiveco/responsivator-sketch-plugin/releases)
 
 Sort your artboards based on the target device or section.
 
