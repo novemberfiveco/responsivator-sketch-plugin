@@ -1,6 +1,6 @@
 {
   "name": "responsivator-sketch-plugin",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Plugin to handle multiple screen sizes in the same document",
   "main": "novemberfive-responsivator.sketchplugin",
   "manifest": "src/manifest.json",
