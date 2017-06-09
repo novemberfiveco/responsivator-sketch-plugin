@@ -1,6 +1,7 @@
 # build artefacts
 novemberfive-responsivator.sketchplugin/Contents/Sketch
 novemberfive-responsivator.sketchplugin/Contents/Resources/Preferences.js
+novemberfive-responsivator.sketchplugin/Contents/Resources/Portal.js
 
 # npm
 node_modules

@@ -2,7 +2,7 @@
   "name": "Responsivator",
   "author": "Geert Wille - November Five",
   "authorEmail": "geert@novemberfive.co",
-  "identifier": "be.novemberfive.responsivator",
+  "identifier": "co.novemberfive.responsivator",
   "compatibleVersion": 3,
   "bundleVersion": 1,
   "commands": [

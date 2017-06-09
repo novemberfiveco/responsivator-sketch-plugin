@@ -5,7 +5,7 @@ import { createFailAlert, findPagesNamedLike, findArtboardsNamed, selectLayersFr
 class ScreenSorter {
   static SECTION = 0
   static DEVICE = 1
-  constructor(context) {
+  constructor (context) {
     this._context = context
     this._document = context.document
     this._command = context.command
@@ -63,7 +63,8 @@ class ScreenSorter {
   sortOnSection () {
     // Create a Sort Descriptor for artboard size and name
     let sortByName = NSSortDescriptor.sortDescriptorWithKey_ascending('name', 1)
-    let sortedArtboards = this.convertArtboardsToSortableDictionary().sortedArrayUsingDescriptors([sortByName])
+    let sortBySize = NSSortDescriptor.sortDescriptorWithKey_ascending('width', this._defaultSort)
+    let sortedArtboards = this.convertArtboardsToSortableDictionary().sortedArrayUsingDescriptors([sortByName, sortBySize])
     let sortedArtboardLoop = sortedArtboards.objectEnumerator()
     let customArtboard
 
