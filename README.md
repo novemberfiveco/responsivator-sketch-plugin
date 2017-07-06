@@ -4,16 +4,22 @@ responsivator-sketch-plugin
 
 Sort your artboards based on the target device or section.
 
+![Responsivator Sketch Plugin](https://media.giphy.com/media/CVQJ4NRLSlqco/giphy.gif)
+
+## Blog post
+You can read here how and why we use this plugin:
+https://novemberfive.co/blog/responsive-workflow-design-sketch-/
+
 ## Installation
 
-### From a release (simplest)
+### For designers (to use this plugin instantly)
 
 * [Download](https://github.com/novemberfiveco/responsivator-sketch-plugin/releases/latest) the latest release of the plugin
 * Un-zip
 * Double-click on novemberfive-responsivator.sketchplugin
 * Install
 
-### From the sources
+### For developers/contributers
 
 * Clone the repo
 * Install the dependencies (`npm install`)
@@ -31,4 +37,3 @@ For example:
 * `xxl-1-0` -> Device *xxl* section *1* and screen *0*
 
 Take a look at the [example file](https://github.com/novemberfiveco/responsivator-sketch-plugin/tree/master/example/example.sketch) to see how it works
-
