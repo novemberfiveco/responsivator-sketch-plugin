@@ -8,7 +8,7 @@ Sort your artboards based on the target device or section.
 
 ## Blog post
 You can read here how and why we use this plugin:
-https://novemberfive.co/blog/responsive-workflow-design-sketch-/
+https://novemberfive.co/blog/responsive-workflow-design-sketch/
 
 ## Installation
 
