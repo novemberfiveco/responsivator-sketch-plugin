@@ -1,5 +1,12 @@
 import { ModelClasses } from 'sketch-constants'
 
+export function deselectAllLayers (document) {
+  const selectedLayers = document.selectedLayers().layers()
+  if (selectedLayers.count()) {
+    selectedLayers.firstObject().select_byExpandingSelection(false, false)
+  }
+}
+
 export function findLayersMatchingPredicateInContainerFilterByType (document, predicate, container, layerType) {
   var scope
   switch (layerType) {
@@ -100,7 +107,6 @@ export function findLayersByRegexInContainer (document, layerType, containerLaye
   let predicate = NSPredicate.predicateWithFormat('(name MATCHES %@)', layerType)
   let layers = scope.filteredArrayUsingPredicate(predicate)
 
-
   return layers
 }
 
@@ -111,7 +117,7 @@ export function selectLayersByRegexInContainer (document, layerName, containerLa
   let layers = scope.filteredArrayUsingPredicate(predicate)
 
   // Deselect current selection
-  document.currentPage().deselectAllLayers()
+  deselectAllLayers(document)
 
   // Loop through filtered layers and select them
   let loop = layers.objectEnumerator()
@@ -129,9 +135,8 @@ export function selectLayersByRegexAndTypeInContainer (document, layerName, laye
   let predicate = NSPredicate.predicateWithFormat("className == '" + layerType + "' && name MATCHES %@", layerName)
   let layers = findLayersMatchingPredicateInContainerFilterByType(document, predicate, container)
 
-
   // Deselect current selection
-  document.currentPage().deselectAllLayers()
+  deselectAllLayers(document)
 
   // Loop through filtered layers and select them
   let loop = layers.objectEnumerator()
@@ -144,7 +149,7 @@ export function selectLayersByRegexAndTypeInContainer (document, layerName, laye
 }
 
 export function selectLayersFromList (document, layerList) {
-  document.currentPage().deselectAllLayers()
+  deselectAllLayers(document)
   // Loop through filtered layers and select them
   let loop = layerList.objectEnumerator()
   let layer
