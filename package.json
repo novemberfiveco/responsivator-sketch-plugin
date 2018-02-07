@@ -1,18 +1,28 @@
 {
-  "name": "responsivator-sketch-plugin",
+  "name": "novemberfive-responsivator",
   "version": "0.3.2",
   "description": "Plugin to handle multiple screen sizes in the same document",
   "main": "novemberfive-responsivator.sketchplugin",
-  "manifest": "src/manifest.json",
   "resources": [
     "Resources/Preferences.js",
     "Resources/Portal.js"
   ],
+  "engines": {
+    "sketch": ">=3.0"
+  },
+  "skpm": {
+    "name": "novemberfive-responsivator",
+    "manifest": "src/manifest.json",
+    "main": "novemberfive-responsivator.sketchplugin"
+  },
   "scripts": {
-    "test": "eslint -c ./.eslintrc src/ && eslint -c ./.eslintrc Resources/",
-    "postinstall": "npm run build && skpm link ./",
-    "build": "skpm build",
-    "publish": "skpm publish",
+    "build": "skpm-build",
+    "watch": "skpm-build --watch",
+    "start": "skpm-build --watch --run",
+    "postinstall": "npm run build && skpm-link",
+    "lint-staged": "lint-staged",
+    "prettier:base": "prettier --single-quote --trailing-comma es5 --no-semi --write",
+    "prettify": "npm run prettier:base \"./src/**/*.js\"",
     "todos": "node scripts/todo.js"
   },
   "repository": {
@@ -25,26 +35,7 @@
     "url": "https://github.com/novemberfiveco/responsivator-sketch-plugin/issues"
   },
   "homepage": "https://github.com/novemberfiveco/responsivator-sketch-plugin#readme",
-  "devDependencies": {
-    "babel-plugin-transform-react-jsx": "^6.8.0",
-    "babel-preset-es2015": "^6.18.0",
-    "babel-preset-react": "^6.16.0",
-    "babel-preset-stage-2": "^6.24.1",
-    "eslint": "^3.19.0",
-    "eslint-config-sketch": "^0.2.2",
-    "eslint-config-standard": "^10.2.0",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-node": "4.2.2",
-    "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "skpm": "^0.8.2",
-    "chalk": "^1.1.3",
-    "fs-extra": "^1.0.0"
-  },
   "dependencies": {
-    "eslint-config-sketch": "^0.2.2",
-    "eslint-config-standard-preact": "^1.0.1",
-    "eslint-plugin-react": "^6.10.3",
     "preact": "^7.1.0",
     "sketch-constants": "^1.0.2",
     "sketch-module-fs": "^0.1.2",
@@ -52,5 +43,37 @@
     "sketch-module-update": "git://github.com/novemberfiveco/sketch-module-update.git#master",
     "sketch-module-user-preferences": "^1.0.1",
     "sketch-module-web-view": "^0.1.4"
+  },
+  "devDependencies": {
+    "@skpm/builder": "^0.1.3",
+    "babel-eslint": "^8.2.1",
+    "babel-plugin-transform-react-jsx": "^6.8.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-2": "^6.24.1",
+    "eslint": "^4.8.0",
+    "eslint-config-prettier": "^2.6.0",
+    "eslint-config-sketch": "^0.2.2",
+    "eslint-config-standard": "^10.2.0",
+    "eslint-config-standard-preact": "^1.0.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-no-not-accumulator-reassign": "^0.1.0",
+    "eslint-plugin-node": "4.2.2",
+    "eslint-plugin-prettier": "^2.3.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "lint-staged": "^4.2.3",
+    "pre-commit": "^1.2.2",
+    "prettier": "^1.7.4"
+  },
+  "pre-commit": [
+    "lint-staged"
+  ],
+  "lint-staged": {
+    "src/*.js": [
+      "npm run prettier:base",
+      "eslint --quiet --rule 'prettier/prettier: [\"error\", {\"trailingComma\": \"es5\", \"singleQuote\": true}]'",
+      "git add"
+    ]
   }
 }

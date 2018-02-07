@@ -2,17 +2,19 @@
 novemberfive-responsivator.sketchplugin/Contents/Sketch
 novemberfive-responsivator.sketchplugin/Contents/Resources/Preferences.js
 novemberfive-responsivator.sketchplugin/Contents/Resources/Portal.js
+novemberfive-responsivator.sketchplugin/Contents/Resources/_webpack_resources
 
 # npm
 node_modules
+.npm
+npm-debug.log
+
+# mac
+.DS_Store
 
 # Logs
 logs
 *.log
-npm-debug.log*
-
-# Optional npm cache directory
-.npm
 
 # IDE
 .vscode

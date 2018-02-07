@@ -1,10 +1,20 @@
 ---
+root: true
 extends:
   - standard
   - standard-preact
   - plugin:import/warnings
   - plugin:import/errors
+  - prettier
   - sketch
+plugins:
+  - no-not-accumulator-reassign
+  - prettier
+env:
+    node: true
+rules:
+  no-underscore-dangle: ["error", { "allowAfterThis": true }]
+  no-not-accumulator-reassign/no-not-accumulator-reassign: [2, ['reduce'], {props: true}]
 parserOptions:
   ecmaVersion: 2017
   sourceType: module
