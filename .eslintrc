@@ -11,7 +11,11 @@ plugins:
   - no-not-accumulator-reassign
   - prettier
 env:
-    node: true
+  node: true
+globals:
+  NSSortDescriptor: false
+  NSPredicate: false
+  NSJSONSerialization: false
 rules:
   no-underscore-dangle: ["error", { "allowAfterThis": true }]
   no-not-accumulator-reassign/no-not-accumulator-reassign: [2, ['reduce'], {props: true}]

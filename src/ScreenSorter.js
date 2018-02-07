@@ -1,35 +1,65 @@
-import { sendEvent, sendError } from './analytics'
+import { sendError } from './analytics'
 import { getUserPreferences } from './preferences'
-import { createFailAlert, findPagesNamedLike, findArtboardsNamed, selectLayersFromList } from './helpers'
+import {
+  createFailAlert,
+  findPagesNamedLike,
+  findArtboardsNamed,
+  selectLayersFromList,
+} from './helpers'
 
 class ScreenSorter {
   static SECTION = 0
   static DEVICE = 1
-  constructor (context) {
+  constructor(context) {
     this._context = context
     this._document = context.document
     this._command = context.command
+    this._currentPage = null
     this._artboardPrefixRegex = /^([a-zA-Z]+)-(\d+)-(\d+)/
-    this._paddingHorizontal = parseInt(getUserPreferences(this._context).paddingHorizontal)
-    this._paddingHorizontalDevice = parseInt(getUserPreferences(this._context).paddingHorizontalDevice)
-    this._paddingVertical = parseInt(getUserPreferences(this._context).paddingVertical)
-    this._paddingVerticalDevice = parseInt(getUserPreferences(this._context).paddingVerticalDevice)
-    this._defaultSort = parseInt(getUserPreferences(this._context).defaultSort)
+    this._paddingHorizontal = parseInt(
+      getUserPreferences(this._context).paddingHorizontal,
+      10
+    )
+    this._paddingHorizontalDevice = parseInt(
+      getUserPreferences(this._context).paddingHorizontalDevice,
+      10
+    )
+    this._paddingVertical = parseInt(
+      getUserPreferences(this._context).paddingVertical,
+      10
+    )
+    this._paddingVerticalDevice = parseInt(
+      getUserPreferences(this._context).paddingVerticalDevice,
+      10
+    )
+    this._defaultSort = parseInt(
+      getUserPreferences(this._context).defaultSort,
+      10
+    )
     this._currentColumn = 0
   }
 
-  sort (sortType) {
+  sort(sortType) {
     this._sortType = sortType
 
-    // Are there any screen pages
-    let pages = findPagesNamedLike(this._document, 'screens*')
+    // If we selected a page sort that one otherwise use screens (Can we even have a state where we didn't select a page?)
+    this._screenPage = this._document.currentPage()
 
-    if (pages.count() == 0) {
-      sendError(this._context, 'Page screen doesn\'t exist')
-      return createFailAlert(this._context, 'Missing page', 'Please make a page with the name "screens"')
+    if (!this._screenPage) {
+      // Are there any screen pages
+      const pages = findPagesNamedLike(this._document, 'screens*')
+
+      if (pages.count() == 0) {
+        sendError(this._context, "Page screen doesn't exist")
+        return createFailAlert(
+          this._context,
+          'Missing page',
+          'Please make a page with the name "screens"'
+        )
+      }
+
+      this._screenPage = pages[0]
     }
-
-    this._screenPage = pages[0]
 
     // Get all artboards from the screens page
     this._artboards = this._screenPage.artboards()
@@ -46,52 +76,77 @@ class ScreenSorter {
   }
 
   // We need to rename all the artboards to be able to sort correctly
-  convertArtboardsToSortableDictionary () {
+  convertArtboardsToSortableDictionary() {
     let artboard
     let artboardInfo
-    let artboardLoop = this._artboards.objectEnumerator()
-    let customArtboards = NSMutableArray.new()
+    const artboardLoop = this._artboards.objectEnumerator()
+    const customArtboards = NSMutableArray.new()
 
-    while (artboard = artboardLoop.nextObject()) {
+    while ((artboard = artboardLoop.nextObject())) {
       artboardInfo = this._artboardPrefixRegex.exec(artboard.name())
-      customArtboards.push(NSDictionary.dictionaryWithObjectsAndKeys(artboardInfo[2] + '-' + artboardInfo[3], 'name', artboard.frame().width(), 'width', artboard, 'artboard'))
+      customArtboards.push(
+        NSDictionary.dictionaryWithObjectsAndKeys(
+          `${artboardInfo[2]}-${artboardInfo[3]}`,
+          'name',
+          artboard.frame().width(),
+          'width',
+          artboard,
+          'artboard'
+        )
+      )
     }
 
     return customArtboards
   }
 
-  sortOnSection () {
+  sortOnSection() {
     // Create a Sort Descriptor for artboard size and name
-    let sortByName = NSSortDescriptor.sortDescriptorWithKey_ascending('name', 1)
-    let sortBySize = NSSortDescriptor.sortDescriptorWithKey_ascending('width', this._defaultSort)
-    let sortedArtboards = this.convertArtboardsToSortableDictionary().sortedArrayUsingDescriptors([sortByName, sortBySize])
-    let sortedArtboardLoop = sortedArtboards.objectEnumerator()
+    const sortByName = NSSortDescriptor.sortDescriptorWithKey_ascending(
+      'name',
+      1
+    )
+    const sortBySize = NSSortDescriptor.sortDescriptorWithKey_ascending(
+      'width',
+      this._defaultSort
+    )
+    const sortedArtboards = this.convertArtboardsToSortableDictionary().sortedArrayUsingDescriptors(
+      [sortByName, sortBySize]
+    )
+    const sortedArtboardLoop = sortedArtboards.objectEnumerator()
     let customArtboard
 
     // Loop through sorted layers
-    while (customArtboard = sortedArtboardLoop.nextObject()) {
+    while ((customArtboard = sortedArtboardLoop.nextObject())) {
       this._screenPage.removeLayer(customArtboard.artboard)
       this.addArtboard(customArtboard.artboard)
     }
   }
 
-  sortOnDevice () {
+  sortOnDevice() {
     // Create a Sort Descriptor for artboard name
-    let sortBySize = NSSortDescriptor.sortDescriptorWithKey_ascending('width', this._defaultSort)
-    let sortByName = NSSortDescriptor.sortDescriptorWithKey_ascending('name', 1)
-    let sortedArtboards = this.convertArtboardsToSortableDictionary().sortedArrayUsingDescriptors([sortBySize, sortByName])
-    let sortedArtboardLoop = sortedArtboards.objectEnumerator()
+    const sortBySize = NSSortDescriptor.sortDescriptorWithKey_ascending(
+      'width',
+      this._defaultSort
+    )
+    const sortByName = NSSortDescriptor.sortDescriptorWithKey_ascending(
+      'name',
+      1
+    )
+    const sortedArtboards = this.convertArtboardsToSortableDictionary().sortedArrayUsingDescriptors(
+      [sortBySize, sortByName]
+    )
+    const sortedArtboardLoop = sortedArtboards.objectEnumerator()
     let customArtboard
 
     // Loop through sorted layers
-    while (customArtboard = sortedArtboardLoop.nextObject()) {
+    while ((customArtboard = sortedArtboardLoop.nextObject())) {
       this._screenPage.removeLayer(customArtboard.artboard)
       this.addArtboard(customArtboard.artboard)
     }
   }
 
-  addArtboard (artboard) {
-    let artboardFrame = artboard.frame()
+  addArtboard(artboard) {
+    const artboardFrame = artboard.frame()
     let previousArtboardFrame
 
     this._previousArtboardInfo = this._artboardInfo
@@ -100,7 +155,11 @@ class ScreenSorter {
     if (this._artboardInfo && this._previousArtboardInfo) {
       previousArtboardFrame = this._previousArtboard.frame()
 
-      if (this._previousArtboardInfo[2] !== this._artboardInfo[2] || (this._sortType == ScreenSorter.DEVICE && this._previousArtboardInfo[1] !== this._artboardInfo[1])) {
+      if (
+        this._previousArtboardInfo[2] !== this._artboardInfo[2] ||
+        (this._sortType == ScreenSorter.DEVICE &&
+          this._previousArtboardInfo[1] !== this._artboardInfo[1])
+      ) {
         this._currentRow++
         this._currentColumn = 0
       }
@@ -108,22 +167,43 @@ class ScreenSorter {
 
     artboardFrame.constrainProportions = false
     if (this._currentColumn !== 0) {
-      if (this._sortType == ScreenSorter.SECTION && this._previousArtboardInfo[3] !== this._artboardInfo[3]) {
-        artboardFrame.setX(previousArtboardFrame.x() + previousArtboardFrame.width() + this._paddingHorizontalDevice)
+      if (
+        this._sortType == ScreenSorter.SECTION &&
+        this._previousArtboardInfo[3] !== this._artboardInfo[3]
+      ) {
+        artboardFrame.setX(
+          previousArtboardFrame.x() +
+            previousArtboardFrame.width() +
+            this._paddingHorizontalDevice
+        )
       } else {
-        artboardFrame.setX(previousArtboardFrame.x() + previousArtboardFrame.width() + this._paddingHorizontal)
+        artboardFrame.setX(
+          previousArtboardFrame.x() +
+            previousArtboardFrame.width() +
+            this._paddingHorizontal
+        )
       }
     } else {
-      artboardFrame.setX(this._currentColumn * artboardFrame.width() + this._paddingHorizontal)
+      artboardFrame.setX(
+        this._currentColumn * artboardFrame.width() + this._paddingHorizontal
+      )
     }
 
     if (this._previousArtboard) {
       if (this._currentColumn === 0) {
         // Are we making a new row for a different screen size if so use device vertical padding
         if (this._artboardInfo[1] === this._previousArtboardInfo[1]) {
-          artboardFrame.setY(previousArtboardFrame.y() + this._previousHighestHeight + this._paddingVertical)
+          artboardFrame.setY(
+            previousArtboardFrame.y() +
+              this._previousHighestHeight +
+              this._paddingVertical
+          )
         } else {
-          artboardFrame.setY(previousArtboardFrame.y() + this._previousHighestHeight + this._paddingVerticalDevice)
+          artboardFrame.setY(
+            previousArtboardFrame.y() +
+              this._previousHighestHeight +
+              this._paddingVerticalDevice
+          )
         }
         // Reset height for calculation of new highest frame of the current row
         this._previousHighestHeight = 0
@@ -132,7 +212,10 @@ class ScreenSorter {
       }
 
       // If there is a higher artboard change the height setting for next row
-      this._previousHighestHeight = this._previousHighestHeight < artboardFrame.height() ? artboardFrame.height() : this._previousHighestHeight
+      this._previousHighestHeight =
+        this._previousHighestHeight < artboardFrame.height()
+          ? artboardFrame.height()
+          : this._previousHighestHeight
     } else {
       artboardFrame.setY(0)
       this._previousHighestHeight = artboardFrame.height()
@@ -143,7 +226,10 @@ class ScreenSorter {
 
     // This is for making sure we sort descending on the layer/artboard view
     if (this._previousArtboard) {
-      this._screenPage.insertLayers_beforeLayer([artboard], this._previousArtboard)
+      this._screenPage.insertLayers_beforeLayer(
+        [artboard],
+        this._previousArtboard
+      )
     } else {
       this._screenPage.addLayers([artboard])
     }
@@ -152,24 +238,36 @@ class ScreenSorter {
     return artboard
   }
 
-  validateArtboards () {
-    let artboardLoop = this._artboards.objectEnumerator()
+  validateArtboards() {
+    const artboardLoop = this._artboards.objectEnumerator()
     let artboard
 
     // Check on artboard name
-    while (artboard = artboardLoop.nextObject()) {
+    while ((artboard = artboardLoop.nextObject())) {
       // Check or there are multiple artboards with the same name
-      let artboards = findArtboardsNamed(this._document, artboard.name(), this._screenPage)
+      const artboards = findArtboardsNamed(
+        this._document,
+        artboard.name(),
+        this._screenPage
+      )
 
       if (artboards.count() > 1) {
         selectLayersFromList(this._document, artboards)
         sendError(this._context, 'Duplicated artboard')
-        return createFailAlert(this._context, 'Duplicated artboard', 'Please fix the artboard name of ' + artboard.name())
+        return createFailAlert(
+          this._context,
+          'Duplicated artboard',
+          `Please fix the artboard name of ${artboard.name()}`
+        )
       }
 
       if (!this._artboardPrefixRegex.test(artboard.name())) {
         sendError(this._context, 'Incorrect artboard name')
-        return createFailAlert(this._context, 'Incorrect artboard name', 'Please fix the artboard name of ' + artboard.name())
+        return createFailAlert(
+          this._context,
+          'Incorrect artboard name',
+          `Please fix the artboard name of ${artboard.name()}`
+        )
       }
     }
   }
